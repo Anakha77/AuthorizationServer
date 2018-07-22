@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationServer", "AuthorizationServer\AuthorizationServer.csproj", "{F524AB52-5DFF-48BB-A569-B49CEDB36CBD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationServer", "AuthorizationServer\AuthorizationServer.csproj", "{F524AB52-5DFF-48BB-A569-B49CEDB36CBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationServer2", "AuthorizationServer2\AuthorizationServer2.csproj", "{4077A8F9-26F9-4772-854A-7A0F825462B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F524AB52-5DFF-48BB-A569-B49CEDB36CBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F524AB52-5DFF-48BB-A569-B49CEDB36CBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F524AB52-5DFF-48BB-A569-B49CEDB36CBD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4077A8F9-26F9-4772-854A-7A0F825462B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4077A8F9-26F9-4772-854A-7A0F825462B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4077A8F9-26F9-4772-854A-7A0F825462B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4077A8F9-26F9-4772-854A-7A0F825462B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
