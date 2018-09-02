@@ -1,9 +1,9 @@
-﻿using IdentityServer4;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using IdentityServer4;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace AuthorizationServer.Controllers
 {
@@ -19,7 +19,7 @@ namespace AuthorizationServer.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(string returnUrl)
         {
-            ConsentResponse grantedConsent = new ConsentResponse
+            var grantedConsent = new ConsentResponse
             {
                 RememberConsent = true,
                 ScopesConsented = new List<string>

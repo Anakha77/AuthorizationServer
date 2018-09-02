@@ -1,6 +1,6 @@
-﻿using AuthorizationServer.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using AuthorizationServer.Dto;
 
 namespace AuthorizationServer.Interfaces
 {
@@ -9,6 +9,5 @@ namespace AuthorizationServer.Interfaces
         IEnumerable<User> GetUsers();
 
         User FindById(Guid subjectId);
-        User FindByUsername(string username);
     }
 }

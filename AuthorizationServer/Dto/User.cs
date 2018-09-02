@@ -1,11 +1,9 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace AuthorizationServer.Entity
+namespace AuthorizationServer.Dto
 {
     public class User
     {
-        [Key]
         public Guid SubjectId { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }

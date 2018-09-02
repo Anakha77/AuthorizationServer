@@ -1,25 +1,24 @@
-﻿using AuthorizationServer.Data;
-using AuthorizationServer.Interfaces;
+﻿using System;
+using System.Threading.Tasks;
+using AuthorizationServer.Domain;
 using AuthorizationServer.Models;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace AuthorizationServer.Controllers
 {
     public class AccountController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
-        private readonly IUserRepository _userRepository;
+        private readonly IUserManager _userManager;
 
-        public AccountController(IIdentityServerInteractionService interaction, IUserRepository userRepository)
+        public AccountController(IIdentityServerInteractionService interaction, IUserManager userManager)
         {
             _interaction = interaction;
-            _userRepository = userRepository;
+            _userManager = userManager;
         }
 
 
@@ -56,9 +55,9 @@ namespace AuthorizationServer.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = _userRepository.FindByUsername(model.Username);
+                var user = _userManager.FindByUsername(model.Username);
 
-                if(user?.Password == model.Password)
+                if (user?.Password == model.Password)
                 {
                     // await _events.RaiseAsync(new UserLoginSuccessEvent(user.UserName, user.Id, user.UserName));
 

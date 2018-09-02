@@ -1,10 +1,12 @@
 ﻿using AuthorizationServer.Data;
+using AuthorizationServer.Domain;
 using AuthorizationServer.Interfaces;
+using AuthorizationServer.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 
 namespace AuthorizationServer
 {
@@ -26,7 +28,8 @@ namespace AuthorizationServer
                 .AddInMemoryIdentityResources(Config.GetIdentityResources())
                 .AddDeveloperSigningCredential();
 
-            services.AddSingleton<IUserRepository, Users>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IUserManager, UserManager>();
 
             services.AddMvc();
 

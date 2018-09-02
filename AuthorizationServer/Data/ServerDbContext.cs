@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using AuthorizationServer.Entity;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace AuthorizationServer.Data
 {
     public class ServerDbContext : DbContext
     {
-        public ServerDbContext (DbContextOptions<ServerDbContext> options)
+        public ServerDbContext(DbContextOptions<ServerDbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<AuthorizationServer.Entity.User> User { get; set; }
+        public DbSet<Entity.User> User { get; set; }
     }
 }
