@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuthorizationServer
 {
@@ -28,6 +29,9 @@ namespace AuthorizationServer
             services.AddSingleton<IUserRepository, Users>();
 
             services.AddMvc();
+
+            services.AddDbContext<ServerDbContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("ServerDbContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -30,7 +30,7 @@ namespace AuthorizationServer.Data
 
         public User FindById(Guid subjectId)
         {
-            return _users.FirstOrDefault(u => u.SubjectId  == subjectId);
+            return _users.FirstOrDefault(u => u.SubjectId == subjectId);
         }
         public User FindByUsername(string username)
         {
