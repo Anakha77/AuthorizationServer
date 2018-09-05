@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AuthorizationServer.Data;
 using AuthorizationServer.Dto;
 using AuthorizationServer.Interfaces;
@@ -16,14 +17,16 @@ namespace AuthorizationServer.Repositories
             _context = context;
         }
 
-        User IUserRepository.FindById(Guid subjectId)
-        {
-            return _context.User.Find(subjectId).ToUser();
-        }
-
         IEnumerable<User> IUserRepository.GetUsers()
         {
             return _context.User.Select(u => u.ToUser());
+        }
+
+        async Task<User> IUserRepository.FindByIdAsync(Guid subjectId)
+        {
+            var user = await _context.User.FindAsync(subjectId);
+
+            return user.ToUser();
         }
     }
 

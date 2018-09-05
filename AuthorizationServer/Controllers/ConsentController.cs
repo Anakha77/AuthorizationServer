@@ -25,9 +25,7 @@ namespace AuthorizationServer.Controllers
                 ScopesConsented = new List<string>
                 {
                     IdentityServerConstants.StandardScopes.OpenId,
-                    IdentityServerConstants.StandardScopes.Profile,
-                    IdentityServerConstants.StandardScopes.Email,
-                    "adherent.profile"
+                    IdentityServerConstants.StandardScopes.Profile
                 }
             };
 

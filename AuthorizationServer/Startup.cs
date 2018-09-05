@@ -33,6 +33,8 @@ namespace AuthorizationServer
                 .AddInMemoryClients(Config.GetClients(Configuration))
                 .AddInMemoryIdentityResources(Config.GetIdentityResources());
 
+            builder.AddProfileService<ProfileService>();
+
             if (Environment.IsDevelopment())
             {
                 builder.AddDeveloperSigningCredential();

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AuthorizationServer.Dto;
 
 namespace AuthorizationServer.Interfaces
@@ -8,6 +9,6 @@ namespace AuthorizationServer.Interfaces
     {
         IEnumerable<User> GetUsers();
 
-        User FindById(Guid subjectId);
+        Task<User> FindByIdAsync(Guid subjectId);
     }
 }

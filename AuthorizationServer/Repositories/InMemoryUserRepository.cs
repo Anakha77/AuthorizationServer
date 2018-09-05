@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using AuthorizationServer.Dto;
 using AuthorizationServer.Interfaces;
 using IdentityModel;
@@ -20,21 +21,21 @@ namespace AuthorizationServer.Repositories
                 FirstName = "Test",
                 LastName = "Test",
                 Password = "password",
-                Username = "test@example.com",
+                Username = "test",
                 Claims = new Claim[]
                 {
-                    new Claim(JwtClaimTypes.Name, "Mr. Test"),
-                    new Claim(JwtClaimTypes.Role, "user")
+                    new Claim(JwtClaimTypes.Email, "test@example.com"),
+                    new Claim(JwtClaimTypes.EmailVerified, "true", ClaimValueTypes.Boolean)
                 }
             });
         }
 
-        public User FindById(Guid subjectId)
+        Task<User> IUserRepository.FindByIdAsync(Guid subjectId)
         {
-            return _users[0];
+            return Task.FromResult(_users[0]);
         }
 
-        public IEnumerable<User> GetUsers()
+        IEnumerable<User> IUserRepository.GetUsers()
         {
             return _users;
         }

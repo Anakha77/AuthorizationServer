@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
+using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 using Microsoft.Extensions.Configuration;
@@ -50,7 +52,7 @@ namespace AuthorizationServer
                 {
                     ClientId = "client.mvc",
                     ClientName = "Client MVC",
-                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
                     RequireConsent = true,
                     ClientSecrets =
                     {
@@ -62,8 +64,9 @@ namespace AuthorizationServer
                     {
                         IdentityServerConstants.StandardScopes.OpenId,
                         IdentityServerConstants.StandardScopes.Profile,
-                        "customAPI"
+                        IdentityServerConstants.StandardScopes.Email
                     },
+                    AlwaysIncludeUserClaimsInIdToken = true,
                     AllowOfflineAccess = true
                 }
             };
@@ -71,11 +74,12 @@ namespace AuthorizationServer
 
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
+            var emailResource = new IdentityResource("email", "Email", new []{ "email", "email_verified" });
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResources.Email()
+                emailResource
             };
         }
     }
