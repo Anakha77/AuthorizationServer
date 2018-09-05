@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AuthorizationServer.Data;
 using AuthorizationServer.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,6 +43,7 @@ namespace AuthorizationServer.Controllers
         }
 
         // GET: User/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -52,6 +54,7 @@ namespace AuthorizationServer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("SubjectId,Username,Password,FirstName,LastName")] User user)
         {
             if (ModelState.IsValid)
@@ -65,6 +68,7 @@ namespace AuthorizationServer.Controllers
         }
 
         // GET: User/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -85,6 +89,7 @@ namespace AuthorizationServer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(Guid id, [Bind("SubjectId,Username,Password,FirstName,LastName")] User user)
         {
             if (id != user.SubjectId)
@@ -116,6 +121,7 @@ namespace AuthorizationServer.Controllers
         }
 
         // GET: User/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -136,6 +142,7 @@ namespace AuthorizationServer.Controllers
         // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var user = await _context.User.SingleOrDefaultAsync(m => m.SubjectId == id);

@@ -35,6 +35,7 @@ namespace AuthorizationServer
                 {
                     ClientId = configuration["Client:ClientId"],
                     ClientName = configuration["Client:ClientName"],
+                    ClientSecrets = new List<Secret> { new Secret(configuration["Client:ClientSecret"].Sha256()) },
                     AllowedGrantTypes = GrantTypes.Implicit,
                     AllowedScopes = new List<string>
                     {
