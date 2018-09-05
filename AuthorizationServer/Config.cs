@@ -1,10 +1,7 @@
-﻿using IdentityModel;
+﻿using System.Collections.Generic;
 using IdentityServer4;
 using IdentityServer4.Models;
-using IdentityServer4.Test;
 using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace AuthorizationServer
 {
@@ -47,6 +44,26 @@ namespace AuthorizationServer
                     },
                     RedirectUris = new List<string> { configuration["Client:RedirectUris:RedirectUri"] },
                     PostLogoutRedirectUris = new List<string> { configuration["Client:PostLogoutRedirectUris:PostLogoutRedirectUri"] }
+                },
+                new Client
+                {
+                    ClientId = "client.mvc",
+                    ClientName = "Client MVC",
+                    AllowedGrantTypes = GrantTypes.Hybrid,
+                    RequireConsent = true,
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+                    RedirectUris = { "http://localhost:5002/signin-oidc" },
+                    PostLogoutRedirectUris = { "http://localhost:5002/signout-callback-oidc" },
+                    AllowedScopes =
+                    {
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Profile,
+                        "customAPI"
+                    },
+                    AllowOfflineAccess = true
                 }
             };
         }
@@ -58,21 +75,6 @@ namespace AuthorizationServer
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
                 new IdentityResources.Email()
-            };
-        }
-
-        public static List<TestUser> GetUsers()
-        {
-            return new List<TestUser> {
-                new TestUser {
-                    SubjectId = "5BE86359-073C-434B-AD2D-A3932222DABE",
-                    Username = "csorlin",
-                    Password = "password",
-                    Claims = new List<Claim> {
-                        new Claim(JwtClaimTypes.Email, "csorlin@gmail.com"),
-                        new Claim(JwtClaimTypes.Role, "user")
-                    }
-                }
             };
         }
     }

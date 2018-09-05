@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AuthorizationServer.Controllers
 {
+    [SecurityHeaders]
     public class AccountController : Controller
     {
         private readonly IIdentityServerInteractionService _interaction;
@@ -74,7 +75,7 @@ namespace AuthorizationServer.Controllers
                         };
                     };
 
-                    await HttpContext.SignInAsync(user.SubjectId.ToString(), user.Username, props);
+                    await HttpContext.SignInAsync(user.SubjectId.ToString(), user.Username, props, user.Claims);
 
                     // make sure the returnUrl is still valid, and if so redirect back to authorize endpoint or a local page
                     if (_interaction.IsValidReturnUrl(model.ReturnUrl) || Url.IsLocalUrl(model.ReturnUrl))
@@ -91,6 +92,30 @@ namespace AuthorizationServer.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Logout(string logoutId)
+        {
+            if (User?.Identity.IsAuthenticated == true)
+            {
+                // delete local authentication cookie
+                await HttpContext.SignOutAsync();
+            }
+
+            // get context information (client name, post logout redirect URI and iframe for federated signout)
+            var logout = await _interaction.GetLogoutContextAsync(logoutId);
+
+            var vm = new LoggedOutViewModel
+            {
+                AutomaticRedirectAfterSignOut = false,
+                PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
+                ClientName = string.IsNullOrEmpty(logout?.ClientName) ? logout?.ClientId : logout?.ClientName,
+                SignOutIframeUrl = logout?.SignOutIFrameUrl,
+                LogoutId = logoutId
+            };
+
+            return View("LoggedOut", vm);
         }
     }
 }

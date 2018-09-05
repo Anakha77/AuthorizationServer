@@ -1,4 +1,5 @@
-﻿using AuthorizationServer.Data;
+﻿using System;
+using AuthorizationServer.Data;
 using AuthorizationServer.Domain;
 using AuthorizationServer.Interfaces;
 using AuthorizationServer.Repositories;
@@ -12,24 +13,37 @@ namespace AuthorizationServer
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+        public IHostingEnvironment Environment { get; }
+
+        public Startup(IConfiguration configuration, IHostingEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentityServer()
+            var builder = services.AddIdentityServer(options =>
+            {
+                options.UserInteraction.ConsentUrl = "~/Consent";
+            })
                 .AddInMemoryApiResources(Config.GetApiResources())
                 .AddInMemoryClients(Config.GetClients(Configuration))
-                .AddInMemoryIdentityResources(Config.GetIdentityResources())
-                .AddDeveloperSigningCredential();
+                .AddInMemoryIdentityResources(Config.GetIdentityResources());
 
-            services.AddSingleton<IUserRepository, UserRepository>();
-            services.AddSingleton<IUserManager, UserManager>();
+            if (Environment.IsDevelopment())
+            {
+                builder.AddDeveloperSigningCredential();
+            }
+            else
+            {
+                throw new Exception("need to configure key material");
+            }
+
+            services.AddScoped<IUserRepository, InMemoryUserRepository>();
+            services.AddScoped<IUserManager, UserManager>();
 
             services.AddMvc();
 
@@ -38,9 +52,9 @@ namespace AuthorizationServer
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (Environment.IsDevelopment())
             {
                 app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
@@ -53,12 +67,7 @@ namespace AuthorizationServer
             app.UseIdentityServer();
             app.UseStaticFiles();
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseMvcWithDefaultRoute();
         }
     }
 }

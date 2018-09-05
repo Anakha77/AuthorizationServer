@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 
 namespace AuthorizationServer.Dto
 {
@@ -9,5 +10,6 @@ namespace AuthorizationServer.Dto
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public Claim[] Claims { get; set; }
     }
 }
