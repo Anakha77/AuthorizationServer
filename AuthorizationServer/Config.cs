@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Security.Claims;
-using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Models;
 using Microsoft.Extensions.Configuration;
@@ -35,21 +33,6 @@ namespace AuthorizationServer
             {
                 new Client
                 {
-                    ClientId = configuration["Client:ClientId"],
-                    ClientName = configuration["Client:ClientName"],
-                    ClientSecrets = new List<Secret> { new Secret(configuration["Client:ClientSecret"].Sha256()) },
-                    AllowedGrantTypes = GrantTypes.Implicit,
-                    AllowedScopes = new List<string>
-                    {
-                        IdentityServerConstants.StandardScopes.OpenId,
-                        IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.Email
-                    },
-                    RedirectUris = new List<string> { configuration["Client:RedirectUris:RedirectUri"] },
-                    PostLogoutRedirectUris = new List<string> { configuration["Client:PostLogoutRedirectUris:PostLogoutRedirectUri"] }
-                },
-                new Client
-                {
                     ClientId = "client.mvc",
                     ClientName = "Client MVC",
                     AllowedGrantTypes = GrantTypes.HybridAndClientCredentials,
@@ -74,7 +57,7 @@ namespace AuthorizationServer
 
         public static IEnumerable<IdentityResource> GetIdentityResources()
         {
-            var emailResource = new IdentityResource("email", "Email", new []{ "email", "email_verified" });
+            var emailResource = new IdentityResource("email", "Email", new[] { "email", "email_verified" });
             return new List<IdentityResource>
             {
                 new IdentityResources.OpenId(),

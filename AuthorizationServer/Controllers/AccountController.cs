@@ -75,7 +75,7 @@ namespace AuthorizationServer.Controllers
                         };
                     };
 
-                    await HttpContext.SignInAsync(user.SubjectId.ToString(), user.Username, props, user.Claims);
+                    await HttpContext.SignInAsync(user.SubjectId.ToString(), user.Username, props);
 
                     // make sure the returnUrl is still valid, and if so redirect back to authorize endpoint or a local page
                     if (_interaction.IsValidReturnUrl(model.ReturnUrl) || Url.IsLocalUrl(model.ReturnUrl))
