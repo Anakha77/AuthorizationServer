@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using AuthorizationServer.Dto;
 using AuthorizationServer.Interfaces;
 
-namespace AuthorizationServer.Domain
+namespace AuthorizationServer.Repositories
 {
     public class UserManager : IUserManager
     {

@@ -6,7 +6,7 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 
-namespace AuthorizationServer.Domain
+namespace AuthorizationServer.Repositories
 {
     public class ProfileService : IProfileService
     {

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using AuthorizationServer.Dto;
 
-namespace AuthorizationServer.Domain
+namespace AuthorizationServer.Repositories
 {
     public interface IUserManager
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AuthorizationServer.Domain;
+using AuthorizationServer.Repositories;
 using AuthorizationServer.Models;
 using IdentityServer4.Models;
 using IdentityServer4.Services;

@@ -1,6 +1,5 @@
 ﻿using System;
 using AuthorizationServer.Data;
-using AuthorizationServer.Domain;
 using AuthorizationServer.Interfaces;
 using AuthorizationServer.Repositories;
 using Microsoft.AspNetCore.Builder;
@@ -29,10 +28,10 @@ namespace AuthorizationServer
             {
                 options.UserInteraction.ConsentUrl = "~/Consent";
             })
-                .AddInMemoryApiResources(Config.GetApiResources())
-                .AddInMemoryClients(Config.GetClients(Configuration))
-                .AddInMemoryIdentityResources(Config.GetIdentityResources());
+            .AddInMemoryApiResources(Config.GetApiResources())
+            .AddInMemoryIdentityResources(Config.GetIdentityResources());
 
+            builder.AddClientStore<ClientStore>();
             builder.AddProfileService<ProfileService>();
 
             if (Environment.IsDevelopment())
@@ -46,6 +45,7 @@ namespace AuthorizationServer
 
             services.AddScoped<IUserRepository, InMemoryUserRepository>();
             services.AddScoped<IUserManager, UserManager>();
+            services.AddTransient<IClientRepository, InMemoryClientRepository>();
 
             services.AddMvc();
 
