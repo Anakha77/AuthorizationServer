@@ -43,7 +43,7 @@ namespace AuthorizationServer
                 throw new Exception("need to configure key material");
             }
 
-            services.AddScoped<IUserRepository, InMemoryUserRepository>();
+            services.AddSingleton<IUserRepository, InMemoryUserRepository>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddTransient<IClientRepository, InMemoryClientRepository>();
 

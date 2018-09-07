@@ -5,7 +5,7 @@ namespace AuthorizationServer.Repositories
 {
     public interface IUserManager
     {
-        User FindByUsername(string username);
+        Task<User> FindByUsernameAsync(string username);
 
         Task<User> FindByIdAsync(string id);
     }

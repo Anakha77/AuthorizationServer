@@ -22,6 +22,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://localhost:5000/"
+    },
+    "Azure Dev Spaces": {
+      "commandName": "AzureDevSpaces",
+      "launchBrowser": true,
+      "resourceGroup": "aks-rg",
+      "aksName": "test",
+      "subscriptionId": "f01d8ea7-5db5-4127-b51b-ecbfe979d36d"
     }
   }
 }

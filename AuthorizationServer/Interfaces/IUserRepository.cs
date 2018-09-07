@@ -7,8 +7,12 @@ namespace AuthorizationServer.Interfaces
 {
     public interface IUserRepository
     {
-        IEnumerable<User> GetUsers();
+        Task<List<User>>ToListAsync();
 
         Task<User> FindByIdAsync(Guid subjectId);
+
+        Task AddAsync(User user);
+        Task UpdateAsync(User user);
+        Task<bool> RemoveAsync(Guid id);
     }
 }

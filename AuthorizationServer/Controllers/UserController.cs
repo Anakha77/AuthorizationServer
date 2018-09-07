@@ -1,27 +1,30 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AuthorizationServer.Data;
-using AuthorizationServer.Entity;
+using AuthorizationServer.Dto;
+using AuthorizationServer.Interfaces;
+using AuthorizationServer.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AuthorizationServer.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
-        private readonly ServerDbContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public UserController(ServerDbContext context)
+        public UserController(IUserRepository userRepository)
         {
-            _context = context;
+            _userRepository = userRepository;
         }
 
         // GET: User
         public async Task<IActionResult> Index()
         {
-            return View(await _context.User.ToListAsync());
+            var users = await _userRepository.ToListAsync();
+            return View(users.Select(u => new UserViewModel(u)));
         }
 
         // GET: User/Details/5
@@ -32,18 +35,18 @@ namespace AuthorizationServer.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User
-                .SingleOrDefaultAsync(m => m.SubjectId == id);
+            var users = await _userRepository.ToListAsync();
+            var user = users.SingleOrDefault(m => m.SubjectId == id);
+
             if (user == null)
             {
                 return NotFound();
             }
-
-            return View(user);
+            var vm = new UserViewModel(user);
+            return View(vm);
         }
 
         // GET: User/Create
-        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -54,21 +57,18 @@ namespace AuthorizationServer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public async Task<IActionResult> Create([Bind("SubjectId,Username,Password,FirstName,LastName")] User user)
         {
             if (ModelState.IsValid)
             {
-                user.SubjectId = Guid.NewGuid();
-                _context.Add(user);
-                await _context.SaveChangesAsync();
+                await _userRepository.AddAsync(user);
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            var vm = new UserViewModel(user);
+            return View(vm);
         }
 
         // GET: User/Edit/5
-        [Authorize]
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
@@ -76,12 +76,13 @@ namespace AuthorizationServer.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User.SingleOrDefaultAsync(m => m.SubjectId == id);
+            var user = await _userRepository.FindByIdAsync((Guid)id);
             if (user == null)
             {
                 return NotFound();
             }
-            return View(user);
+            var vm = new UserViewModel(user);
+            return View(vm);
         }
 
         // POST: User/Edit/5
@@ -89,7 +90,6 @@ namespace AuthorizationServer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public async Task<IActionResult> Edit(Guid id, [Bind("SubjectId,Username,Password,FirstName,LastName")] User user)
         {
             if (id != user.SubjectId)
@@ -101,8 +101,7 @@ namespace AuthorizationServer.Controllers
             {
                 try
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    await _userRepository.UpdateAsync(user);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,7 +120,6 @@ namespace AuthorizationServer.Controllers
         }
 
         // GET: User/Delete/5
-        [Authorize]
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -129,31 +127,29 @@ namespace AuthorizationServer.Controllers
                 return NotFound();
             }
 
-            var user = await _context.User
-                .SingleOrDefaultAsync(m => m.SubjectId == id);
+            var user = await _userRepository.FindByIdAsync((Guid)id);
             if (user == null)
             {
                 return NotFound();
             }
-
-            return View(user);
+            var vm = new UserViewModel(user);
+            return View(vm);
         }
 
         // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var user = await _context.User.SingleOrDefaultAsync(m => m.SubjectId == id);
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
+            await _userRepository.RemoveAsync(id);
+
             return RedirectToAction(nameof(Index));
         }
 
         private bool UserExists(Guid id)
         {
-            return _context.User.Any(e => e.SubjectId == id);
+            var user = Task.Run(() => _userRepository.FindByIdAsync(id));
+            return (user != null);
         }
     }
 }

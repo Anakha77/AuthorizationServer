@@ -20,9 +20,10 @@ namespace AuthorizationServer.Repositories
             return await _userRepository.FindByIdAsync(new Guid(id));
         }
 
-        public User FindByUsername(string username)
+        public async Task<User> FindByUsernameAsync(string username)
         {
-            return _userRepository.GetUsers().FirstOrDefault(u => u.Username.Equals(username, StringComparison.InvariantCultureIgnoreCase));
+            var users = await _userRepository.ToListAsync();
+            return users.SingleOrDefault(u => u.Username.Equals(username, StringComparison.InvariantCultureIgnoreCase));
         }
     }
 }

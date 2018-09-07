@@ -56,7 +56,7 @@ namespace AuthorizationServer.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = _userManager.FindByUsername(model.Username);
+                var user = await _userManager.FindByUsernameAsync(model.Username);
 
                 if (user?.Password == model.Password)
                 {
