@@ -1,0 +1,18 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<html>
+<head>
+    <title>Authorization server. Welcome page.</title>
+</head>
+<body>
+    <h1>Authorization server.</h1>
+    <h2>Welcome page.</h2>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <h3>Welcome @User.Identity.Name</h3>
+    }
+</body>
+</html>
