@@ -38,14 +38,8 @@ namespace AuthorizationServer
             builder.AddClientStore<ClientStore>();
             builder.AddProfileService<ProfileService>();
 
-            if (Environment.IsDevelopment())
-            {
-                builder.AddDeveloperSigningCredential();
-            }
-            else
-            {
-                throw new Exception("need to configure key material");
-            }
+            // TODO : replace by real credential for production
+            builder.AddDeveloperSigningCredential();
 
             services.AddSingleton<IUserRepository, InMemoryUserRepository>();
             services.AddScoped<IUserManager, UserManager>();
@@ -97,12 +91,6 @@ namespace AuthorizationServer
             app.UseIdentityServer();
 
             app.UseMvcWithDefaultRoute();
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute(
-            //        name: "default",
-            //        template: "{controller=Home}/{action=Index}/{id?}");
-            //});
         }
     }
 }
