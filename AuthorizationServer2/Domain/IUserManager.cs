@@ -8,5 +8,7 @@ namespace AuthorizationServer.Repositories
         Task<User> FindByUsernameAsync(string username);
 
         Task<User> FindByIdAsync(string id);
+
+        Task CreateUserAsync(User user);
     }
 }

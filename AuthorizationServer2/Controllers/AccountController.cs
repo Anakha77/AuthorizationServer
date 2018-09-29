@@ -7,6 +7,7 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using AuthorizationServer.Dto;
 
 namespace AuthorizationServer.Controllers
 {
@@ -116,6 +117,38 @@ namespace AuthorizationServer.Controllers
             };
 
             return View("LoggedOut", vm);
+        }
+
+        [HttpGet]
+        public IActionResult Register(string returnUrl)
+        {
+            var vm = new UserViewModel { ReturnUrl = returnUrl };
+            return View(vm);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(UserViewModel model, string button)
+        {
+            if (button != "Valider")
+            {
+                return Redirect("~/");
+            }
+            if (ModelState.IsValid)
+            {
+                var user = new User
+                {
+                    Username = model.Username,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Password = model.Password
+                };
+                await _userManager.CreateUserAsync(user);
+
+                model.RegistrationSucess = true;
+            }
+
+            return View(model);
         }
     }
 }
