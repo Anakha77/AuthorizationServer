@@ -1,0 +1,60 @@
+﻿@model AuthorizationServer.Models.UserViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h2>Inscription</h2>
+
+<div class="row">
+    @if (Model.RegistrationSucess)
+    {
+        <h3>
+            Félicitations ! <br />
+            Votre inscription a bien été prise en compte.
+        </h3>
+        <p>Vous allez bientôt recevoir un email de confirmation</p>
+        <p>
+            Vous pouvez vous connecter dès maintenant avec votre e-mail et votre mot de passe
+            <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@Model.ReturnUrl" class="btn btn-primary">Se connecter</a>
+        </p>
+    }
+    else
+    {
+        <div class="col-md-4">
+            <form asp-action="Register">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Username" class="control-label"></label>
+                    <input asp-for="Username" class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password" class="control-label"></label>
+                    <input type="password" asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ConfirmPassword" class="control-label"></label>
+                    <input type="password" asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FirstName" class="control-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName" class="control-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <input type="hidden" asp-for="ReturnUrl" />
+                <div class="form-group">
+                    <button name="button" value="Valider" class="btn btn-primary">Valider</button>
+                    <button name="button" value="Annuler" class="btn btn-default">Annuler</button>
+                </div>
+            </form>
+        </div>
+    }
+</div>

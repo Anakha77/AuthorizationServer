@@ -15,6 +15,11 @@ namespace AuthorizationServer.Repositories
             _userRepository = userRepository;
         }
 
+        public async Task CreateUserAsync(User user)
+        {
+            await _userRepository.AddAsync(user);
+        }
+
         public async Task<User> FindByIdAsync(string id)
         {
             return await _userRepository.FindByIdAsync(new Guid(id));
