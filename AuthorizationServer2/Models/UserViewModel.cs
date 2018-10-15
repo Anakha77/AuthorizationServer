@@ -30,6 +30,10 @@ namespace AuthorizationServer.Models
         [MinLength(8, ErrorMessage = "Le mot de passe doit contenir au moins 8 caractères")]
         public string Password { get; set; }
 
+        [Display(Name = "Confirmation mot de passe")]
+        [Required(ErrorMessage = "Ce champ est obligatoire")]
+        public string ConfirmPassword { get; set; }
+
         [Display(Name = "Prénom")]
         [Required(ErrorMessage = "Ce champ est obligatoire")]
         public string FirstName { get; set; }
@@ -47,6 +51,10 @@ namespace AuthorizationServer.Models
             if (GetComplexityLevel(Password) < 3)
             {
                 yield return new ValidationResult("Le mot de passe doit contenir au moins 3 des 4 types de caractères suivants : Majuscules, minuscules, chiffres, caractères spéciaux", new[] { nameof(Password) });
+            }
+            if (!Password.Equals(ConfirmPassword))
+            {
+                yield return new ValidationResult("Le mot de passe n'est pas identique", new[] { nameof(Password), nameof(ConfirmPassword) });
             }
         }
 
